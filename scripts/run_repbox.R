@@ -26,10 +26,19 @@ run = function() {
   
   cat("\n\nCheck Stata License\n\n")
   license.file = "/usr/local/stata/stata.lic"
-  if (!file.exists(license.file)) {
-    cat("\nWarning: No Stata license found.\nYou need to specify the license in your Github Repo via a Github action secret variable STATA_LIC.\nPlease read the documentation for the repbox Github action pipeline.\n")
+  has.license = FALSE
+  
+  
+  if (file.exists(license.file)) {
+    lic = readLines(license.file)
+    if (nchar(trimws(lic))>0) has.license = TRUE
+  }
+  if (!has.license) {
+    cat("\nWarning: No Stata license found.\nYou need to specify the license in your Github Repo via a Github action secret variable STATA_LIC.\nPerform analysis only for R.\n")
+    lang = "r"
   } else {
     cat("\nStata license found.\n")
+    lang = c("stata","r")
   }
   
   cat("\n\nREPBOX ANALYSIS START\n")
@@ -91,7 +100,7 @@ run = function() {
   cat("\nSUPPLEMENT UNPACKED SIZE: ", round(org.mb,2), " MB\n")
 
   opts = repbox_run_opts()
-  repbox_run_project(project_dir, lang = c("stata","r"), opts=opts)
+  repbox_run_project(project_dir, lang = lang, opts=opts)
   
   system("chmod -R 777 /root/projects")
   
@@ -105,10 +114,10 @@ run = function() {
   } else {
     cat("\nStore results\n")
     my.dir.copy("/root/projects/project/reports", "/root/output")
-    cat("\nFiles in reports:")
-    print(list.files("/root/projects/project/reports",recursive = TRUE))
-    cat("\nFiles in output:")
-    print(list.files("/root/output/",recursive = TRUE))
+    #cat("\nFiles in reports:")
+    #print(list.files("/root/projects/project/reports",recursive = TRUE))
+    #cat("\nFiles in output:")
+    #print(list.files("/root/output/",recursive = TRUE))
   }
   key = Sys.getenv("REPBOX_ENCRYPT_KEY")
   #to.7z("/root/projects/project/reports","/root/output/reports.7z",password = key)
