@@ -37,6 +37,10 @@ This list is just a reminder of the steps, you need to do. For an explanation se
 
 After you have set up everything, performing an analysis for another replication package goes faster. Just keep the same repo, change the content of `art` and `sup`. Commit and push the changes to Github, run the workflow and download the results.
 
+## Repbox Updates
+
+I will regularly update the underlying Docker container. This means when using Repbox via this Github Action Pipeline, you will always use the current version of Repbox. Of course, at some point, I should introduce some stable versions between which you can chose. 
+
 ## Automating the steps
 
 All the steps can be automated, e.g. with a shell or R script. Useful will be the [Github cli](https://cli.github.com/) command line utility. if you are a data editor, just contact me and I can help you via Zoom.
@@ -44,6 +48,8 @@ All the steps can be automated, e.g. with a shell or R script. Useful will be th
 ## The future
 
 Many things need to be done...
+
+- Instead of putting supplement and article in the Github Repo, it can be downloaded from somewhere else, e.g. OpenICPSR. Basic feature is there but not yet tested.
 
 - Everything must be more robust.
 
